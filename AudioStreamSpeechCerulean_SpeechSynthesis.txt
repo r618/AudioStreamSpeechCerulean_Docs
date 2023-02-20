@@ -1,0 +1,73 @@
+::o2.2o23::2020 LTS+
+-------------------------------------------------------------------------------
+
+Synthesis is done via 'AudioStreamSpeechCerulean_Synthesis' component,
+it roughly follows https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started-text-to-speech and 
+https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-speech-synthesis
+Similarly to Recognition component this currently doesn't support all but the most straighforward scenarios - so for example no Batch synthesis or Custom voices.
+
+The component accepts either plain text, or valid SSML XML and produces synthetized audio which can be optionally saved locally and/or can be used as audio data for Unity AudioSource with compatible formats.
+It can also retrieve either all service's currently available audio voices, or voices which can be stylized.
+
+-------------------------------------------------------------------------------
+
+    * Text Or SSML:
+                    - is either plain text (string) which will be spoken verbatim, or complete valid XML specifying the text and customizations for supported voices using SSML
+                    - select how the string should be interpreted via
+    * Text Type
+
+        For Text Type == SSML, the string must be valid XML and resulting speech can be further customized for supported languages
+
+        - 'Speech Synthesis Voice' is ignored when complete locale and voice is provided via SSML
+        - please see [ https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-synthesis-markup-structure ] for all SSML options and reference
+
+        - select voice can be stylized i.e. provide option to influence the outcome using styles - please see
+            - https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-synthesis-markup-voice how this is done and voices which support this 
+            https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=tts#voice-styles-and-roles
+
+        - demo scene 'AudioStreamSpeechCerulean_SynthesisStylesDemo' can list voices which support styles, allows picking up a valid style, set its strenght and synthesize audio
+        using constucted SSML
+            - note the scene provides interface only for styles since roles are at the time of writing this not available via Voices API
+            - for roles (and furhter customization) you should construct SSML manually
+
+
+    * Speech Synthesis Output Format:
+                    - is format of the audio with synthesized speech which will be returned; all formats supported by SDK are available, though note that:
+                        - only PCM (RIFF/RAW) formats are spoken directly (DEFAULT and CUSTOM _OUTPUT) and only RIFF and RAW formats are used for Unity AudioClip creation
+
+    * Speech Synthesis Voice:
+                    - complete (ShortName) of the voice to be used, contains also locale so it's not needed to specify it separately
+                    - if SSML Text Type is used (see above), this is ignored since SSML contains both locale and voice
+
+    * Speech Output:
+                    - returned speech can be either spoken directly immediately on audio output by SDK, or delivered as WAV / audio file in which case the SDK doesn't speak the result
+                    - for compatiable formats (see above) an Unity AudioClip is constructed containing the speech
+
+    * Save Original Audio:
+                    - returned speech result can be optionally saved into local download cache, regardless of format
+                    - cache location can be set on 'Support\Resources\AudioStreamRuntimeSettings' (default/empty is Application.persistentDataPath\AudioStream_DownloadCache) and
+                    name of the saved file is constructed from text + voice + format used
+                    
+    * Use Saved Audio:
+                    - if on and a file with the name constructed as per above exists when .StartSpeech() is called, the cached file will be used instead of contacting the service
+                    (so e.g. when format is compatible a new AudioClip will be created)
+
+
+    If the audio format is compatible, an AudioClip is created for each .StartSpeech(..) call (either from previously cached/saved audio data or from new synthesis result - see 'Use Saved Audio' above)
+and new AudioClip is returned passed in UnityEvent - please see demo scenes where after successfully retrieving AudioClip with speech this is set on an user AudioSource and then played automatically.
+
+----------------------------------------------------------------
+Please note SDK uses only non compressed PCM audio by default for speaking directly
+; It is possible to install GStreamer ( https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-use-codec-compressed-audio-input-streams ) for support
+of compressed formats, though this is not implemented directly in the asset yet
+
+----------------------------------------------------------------
+* AudioStreamSpeechCerulean.totalBilledCharacters
+					- only accessible via scripting as a static variable, updated after each successfull synthesis attempt with the lenght of the submitted text/SSMl data
+					- updated by each component, loaded/saved in Awake/OnApplicationQuit from/to PlayerPrefs of the running application
+					- please see also demo scenes for usage
+
+----------------------------------------------------------------
+Custom synthetizer:
+	You can also provide completely custom your own synthesizer + configuration and .StartSpeech(SpeechSynthesizer speechSynthesizer) on the component,
+	the flow + Unity events are identical in that case, parameters (except text/SSML) set in the inspector are ignored since they're all present in recognizer config.

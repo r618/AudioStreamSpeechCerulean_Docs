@@ -1,0 +1,44 @@
+::o2.2o23::2020 LTS+
+-------------------------------------------------------------------------------
+
+Speech recognition is done via 'AudioStreamSpeechCerulean_Recognition' component - it follows best practices as outlined in SDK docs
+	( e.g. https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-recognize-speech ),
+	audio can be recognized from a microphone input, or from an audio file in WAV format (MONO format is recommended)
+	
+Please note that more advanced usage such as Batch transcription, Custom Speech, phrase lists,... are not supported by the asset as of now;
+	features which make sense for gaming contexts such as translation / intent recognition / ... should be supported in the future.
+
+-------------------------------------------------------------------------------
+Several configuration options are exposed in the Inspector, all should have hopefully descriptive Tooltips, in more detail:
+
+	* Speech Source:
+						- for WAV file input MONO file format is recommended - otherwise all channels in the file will be recognized separately; any reasonable samplerate should be OK.
+						- custom mirophone needs an 'endpoint' which is an OS identifier, from C# it is obtainable via e.g. NAudio
+						(https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-select-audio-input-devices)
+						Note: an integration with AudioStream asset (https://assetstore.unity.com/packages/tools/audio/audiostream-pcm-audio-for-unity-65411/?aid=1100l7sC8)
+						which would allow for any/all input devices input is planned, though that would most likely be a separate asset/addon.
+
+	* Speech Type:		- SDK SpeechRecognizer.RecognizeOnceAsync() / SpeechRecognizer.StartContinuousRecognitionAsync()+StopContinuousRecognitionAsync() calls
+						- Continuos type supports dictation
+							(https://learn.microsoft.com/en-us/dotnet/api/microsoft.cognitiveservices.speech.speechconfig.enabledictation
+							https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/display-text-format
+							)
+
+	* Language code:	- see https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support for all languages support
+						- selectable list of all codes is provided for convenience, note that identifiers contain '_' instead of needed '-' in their names
+							you can convert from the LanguageCode enum to valid BCP-47 string using LanguageCode.ToBCP_47String() exetension method
+
+	* Segmentation Silence Timeout Ms and Initial Silence Timeout Ms:
+						- these can be set to improve quality and frequency of results / detected sentences and paragraphs for continuos recognition:
+							https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-recognize-speech
+
+----------------------------------------------------------------
+* AudioStreamSpeechCerulean.totalBilledSeconds:
+					- only accessible via scripting as a static variable, updated after each successfull recognition attempt with the Duration of the audio the service considered for recognition
+					- updated by each component, loaded/saved in Awake/OnApplicationQuit from/to PlayerPrefs of the running application
+					- please see also demo scenes for usage
+
+----------------------------------------------------------------
+Custom recognizer:
+	You can also provide completely custom your own recognizer + configuration and .StartSpeech(SpeechRecognizer speechRecognizer) on the component,
+	the flow + Unity events are identical in that case, parameters set in the inspector are ignored since they're all present in recognizer config.

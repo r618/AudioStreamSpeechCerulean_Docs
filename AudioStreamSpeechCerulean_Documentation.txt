@@ -1,0 +1,35 @@
+::o2.2o23::2020 LTS+
+-------------------------------------------------------------------------------
+
+The asset is a user friendly Unity interface for basic speech recognition and synthesis parts of Microsoft Cognitive Services Speech SDK hosted on Azure platform
+    - for speech services overview please see https://speech.microsoft.com/portal
+
+Microsoft Cognitive Service Speech SDK is distributed with the asset and can be downloaded also from https://aka.ms/csspeech/unitypackage
+    - at the time of publishing v 1.0 Microsoft.CognitiveServices.Speech.1.25.0.unitypackage was used
+    - SDK is hosted at https://github.com/Azure-Samples/cognitive-services-speech-sdk 
+    - please refer also to 
+        https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/quickstart/csharp/unity/text-to-speech
+        https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/quickstart/csharp/unity/from-microphone
+    for more about Unity integration
+
+All components use subscription key and region for authentication currently *only*
+
+( please refer to Azure documentation on how to create needed Resource group and Speech service;
+https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started-speech-to-text, resp.
+https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started-text-to-speech also point to required Azure resources
+)
+
+Subscription Key and Region values can be set on each respective component, OR alternatively -
+if 'SPEECH_KEY' and 'SPEECH_REGION' environment variables are set, their values will be used for authentication instead.
+
+After setting all/needed properties, either set 'Auto Start', or call .StartSpeech() via scripting to run the component,
+standard Unity events are used for all notifications afterwards.
+
+It's possible to supply your own SpeechRecognizer / SpeechSynthesizer as a parameter to .StartSpeech(...);
+All custom settings on the component are then ignored since the whole respective config is provided as part of the custom configuration.
+
+Please also refer to demo scenes and 'AudioStreamSpeechCerulean_SpeechRecognition' and 'AudioStreamSpeechCerulean_SpeechSynthesis' for more
+
+-------------------------------------------------------------------------------
+Note: currently only base scenarios of Synthesis and Recognition parts of the SDK are covered - for more, such as batch transcription, custom speech recognition,
+custom voices,... , please use SDK directly.
