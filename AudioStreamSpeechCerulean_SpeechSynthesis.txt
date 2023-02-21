@@ -44,9 +44,9 @@ It can also retrieve either all service's currently available audio voices, or v
                     - for compatiable formats (see above) an Unity AudioClip is constructed containing the speech
 
     * Save Original Audio:
-                    - returned speech result can be optionally saved into local download cache, regardless of format
-                    - cache location can be set on 'Support\Resources\AudioStreamRuntimeSettings' (default/empty is Application.persistentDataPath\AudioStream_DownloadCache) and
-                    name of the saved file is constructed from text + voice + format used
+                    - returned speech audio can be optionally saved into local download cache, regardless of format
+                    - cache location can be set on 'AudioStreamSpeech\Support\Resources\AudioStreamRuntimeSettings' (default/empty is Application.persistentDataPath\AudioStream_DownloadCache) and
+                    name of the saved file is constructed from text + voice + format set/used on the component
                     
     * Use Saved Audio:
                     - if on and a file with the name constructed as per above exists when .StartSpeech() is called, the cached file will be used instead of contacting the service
