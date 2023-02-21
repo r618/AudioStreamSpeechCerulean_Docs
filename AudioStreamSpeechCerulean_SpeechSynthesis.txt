@@ -16,7 +16,7 @@ It can also retrieve either all service's currently available audio voices, or v
                     - select how the string should be interpreted via
     * Text Type
 
-        For Text Type == SSML, the string must be valid XML and resulting speech can be further customized for supported languages
+        For Text Type == SSML, the string must be complete valid XML and resulting speech can be further customized for supported languages
 
         - 'Speech Synthesis Voice' is ignored when complete locale and voice is provided via SSML
         - please see [ https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-synthesis-markup-structure ] for all SSML options and reference
@@ -54,7 +54,7 @@ It can also retrieve either all service's currently available audio voices, or v
 
 
     If the audio format is compatible, an AudioClip is created for each .StartSpeech(..) call (either from previously cached/saved audio data or from new synthesis result - see 'Use Saved Audio' above)
-and new AudioClip is returned passed in UnityEvent - please see demo scenes where after successfully retrieving AudioClip with speech this is set on an user AudioSource and then played automatically.
+and new AudioClip is returned via UnityEvent - please see demo scenes where after successfully retrieving AudioClip with speech this is set on an user AudioSource and then played automatically.
 
 ----------------------------------------------------------------
 Please note SDK uses only non compressed PCM audio by default for speaking directly
