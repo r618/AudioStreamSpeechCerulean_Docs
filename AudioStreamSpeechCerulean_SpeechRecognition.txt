@@ -8,6 +8,9 @@ Speech recognition is done via 'AudioStreamSpeechCerulean_Recognition' component
 Please note that more advanced usage such as Batch transcription, Custom Speech, phrase lists,... are not supported by the asset as of now;
 	features which make sense for gaming contexts such as translation / intent recognition / ... should be supported in the future.
 
+Please don't forget to set 'Microphone Usage Description' confirmation text for macOS player in Player Settings
+- otherwise speech recognitoin via microphone won't start.
+
 -------------------------------------------------------------------------------
 Several configuration options are exposed in the Inspector, all should have hopefully descriptive Tooltips, in more detail:
 
