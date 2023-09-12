@@ -4,8 +4,7 @@
 The asset is a user friendly Unity interface for basic speech recognition and synthesis parts of Microsoft Cognitive Services Speech SDK hosted on Azure platform
     - for speech services overview please see https://speech.microsoft.com/portal
 
-Microsoft Cognitive Service Speech SDK is distributed with the asset and can be downloaded also from https://aka.ms/csspeech/unitypackage
-    - at the time of publishing v 1.0 Microsoft.CognitiveServices.Speech.1.25.0.unitypackage was used
+Microsoft Cognitive Service Speech SDK is distributed with the asset and latest version can be downloaded from https://aka.ms/csspeech/unitypackage
     - SDK is hosted at https://github.com/Azure-Samples/cognitive-services-speech-sdk 
     - please refer also to 
         https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/quickstart/csharp/unity/text-to-speech
