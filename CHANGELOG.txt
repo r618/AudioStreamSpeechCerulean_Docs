@@ -6,3 +6,4 @@ First release
 V 1.32.1 092023
 - updated MS SDK & demo builds
 - asset's version is following version of the Microsoft.CognitiveServices.Speech unitypackage with which it was released
+- cosmetic UI changes
